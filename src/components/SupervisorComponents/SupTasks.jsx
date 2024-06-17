@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
 
-const ProgressTasks = () => {
+const SupTasks = () => {
     const [tasks, setTasks] = useState([
-        { id: 1, courseId: 1, name: "Software Requirements", description: "Complete the requirements document", dueDate: "2024-06-15", status: "Pending" },
-        { id: 2, courseId: 1, name: "Software Design", description: "Design the software architecture", dueDate: "2024-06-30", status: "In Progress" },
-        { id: 3, courseId: 2, name: "Business Analysis", description: "Complete the business analysis document", dueDate: "2024-07-15", status: "Complete" },
-        { id: 4, courseId: 3, name: "Software Testing", description: "Test the software application", dueDate: "2024-07-30", status: "Pending"},
-        { id: 5, courseId: 3, name: "Software Deployment", description: "Deploy the software application", dueDate: "2024-08-15", status: "Pending"},
-        { id: 6, courseId: 4, name: "Software Maintenance", description: "Maintain the software application", dueDate: "2024-08-30", status: "In Progress"},
-        { id: 7, courseId: 4, name: "Software Review", description: "Review the software application", dueDate: "2024-09-15", status: "Not Started"}
+        { id: 1, courseId: 1, name: "Software Requirements", description: "Review and approve the requirements document", dueDate: "2024-06-15", status: "Pending" },
+        { id: 2, courseId: 1, name: "Software Design", description: "Provide feedback on the software architecture", dueDate: "2024-06-30", status: "In Progress" },
+        { id: 3, courseId: 2, name: "Business Analysis", description: "Review the business analysis document", dueDate: "2024-07-15", status: "Complete" },
+        { id: 4, courseId: 3, name: "Software Testing", description: "Review the software testing results", dueDate: "2024-07-30", status: "Pending"},
+        { id: 5, courseId: 3, name: "Software Deployment", description: "Plan the software deployment strategy", dueDate: "2024-08-15", status: "Pending"},
+        { id: 6, courseId: 4, name: "Software Maintenance", description: "Monitor and maintain the software application", dueDate: "2024-08-30", status: "In Progress"},
+        { id: 7, courseId: 4, name: "Software Review", description: "Conduct a review of the software application", dueDate: "2024-09-15", status: "Not Started"}
     ]);
 
     const { id } = useParams();
@@ -57,7 +57,7 @@ const ProgressTasks = () => {
         <div className="tasks-container">
             <div className="tasks-card">
                 <div className="tasks-card-header">
-                    <h2>Your Tasks</h2>
+                    <h2>Supervisor Tasks</h2>
                 </div>
 
                 <div className="tasks-card-body">
@@ -106,7 +106,7 @@ const ProgressTasks = () => {
                                     <div className="task-card-status">
                                         <p>Status: {task.status}</p>
                                         <button onClick={() => handleTaskCompletion(task.id)}>
-                                            {task.status === "In Progress" ? "Complete" : "Pending"}
+                                            {task.status === "In Progress" ? "Complete" : "In Progress"}
                                         </button>
                                     </div>
                                 </div>
@@ -136,4 +136,4 @@ const ProgressTasks = () => {
     );
 }
 
-export default ProgressTasks;
+export default SupTasks;

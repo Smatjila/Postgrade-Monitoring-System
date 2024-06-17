@@ -20,7 +20,6 @@ const LecturerDetails = ({ lecturer }) => {
       <p>Office Hours: {lecturerDetails.officeHours}</p>
       <p>Email: {lecturerDetails.email}</p>
       <p>{lecturerDetails.bio}</p>
-      {/* Add more details as needed */}
     </div>
   );
 };

@@ -49,7 +49,7 @@ const Sidebar = () => {
           {/* Avatar and profile details container */}
           <div className='profile-container'>
             {/* Avatar */}
-            <img src="https://via.placeholder.com/150" alt="Avatar" className='profile-avatar' />
+            <img src="https://avatar.iran.liara.run/username?username=shaun+matjila" alt="Avatar" className='profile-avatar' />
             {/* Profile details */}
             <div className='profile-details'>
               <h4>NMS Matjila</h4>
