@@ -52,7 +52,7 @@ const Sidebar = () => {
             <img src="https://avatar.iran.liara.run/username?username=shaun+matjila" alt="Avatar" className='profile-avatar' />
             {/* Profile details */}
             <div className='profile-details'>
-              <h4>NMS Matjila</h4>
+              <h4>K Madaba</h4>
               <p>123456789</p>
             </div>
           </div>
