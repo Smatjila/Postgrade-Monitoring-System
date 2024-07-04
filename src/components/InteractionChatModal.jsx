@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import Chat from './Chat'
 import LecturerDetails from './LecturerDetails'; // Assuming the file path is correct
-
-const ChatModal = ({ isOpen, onClose }) => {
+import { io } from 'socket.io-client';
+const socket = io("http://localhost:3001");
+const ChatModal = ( {isOpen, onClose,socket,username,room,lecturer}) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageReceived, setMessageReceived] = useState("");
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
   };
-
+  // useEffect(() => {
+  //   socket.on("receive_message", (data) => {
+  //     setMessageReceived(data.message);
+  //   });
+  // }, []);
+  const [currentMessage,setCurrentMessage]=useState("");
+  const sendMessage= async()=>{
+      if(currentMessage!==""){
+          const messageData={
+              room:room,
+              author:username,
+              message:currentMessage,
+              time:
+              new Date(Date.now()).getHours()+
+              ":"+
+              new Date(Date.now()).getMintues(),
+          };
+          await socket.emit("send_message",messageData);
+      }
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -26,42 +49,27 @@ const ChatModal = ({ isOpen, onClose }) => {
           </div>
           {showDetails && <LecturerDetails lecturer="Dr. Jane Doe" />} {/* Pass lecturer details */}
         </div>
-
         <div className="chat-modal-body">
           <div className="chat-messages">
             <div className="chat-message lecturer">
               <div className="message-content">
-                <p>Dr. Jane Doe: Hello! How can I help you today?</p>
+                {/* <p>{messageReceived}</p> */}
               </div>
             </div>
-
-            <div className="chat-message student">
-              <div className="message-content">
-                <p>You: I have a question about the assignment.</p>
-              </div>
-            </div>
-
-            <div className="chat-message lecturer">
-              <div className="message-content">
-                <p>Dr. Jane Doe: Sure! What do you need help with?</p>
-              </div>
-            </div>
-
-            <div className="chat-message student">
-              <div className="message-content">
-                <p>You: I'm not sure how to get started.</p>
-              </div>
-            </div>
-            
           </div>
         </div>
 
         <div className="chat-input">
-          <input type='text' placeholder='Type your message here...' />
-          <button className='chat-send'>Send</button>
+          <inp ut placeholder='Message...'
+            onChange={(event)=>{
+              setCurrentMessage(event.target.value);
+          }}/>
+          <button onClick={sendMessage}>Send Message</button>
         </div>
       </div>
+   
     </Modal>
+
   );
 };
 
