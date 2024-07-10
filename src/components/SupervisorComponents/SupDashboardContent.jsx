@@ -6,7 +6,7 @@ import SupervisorImage2 from '../../assets/images/SupImages/SupImage2.jpg';
 import SupervisorImage3 from '../../assets/images/SupImages/SupImage3.jpg';
 import SupervisorImage4 from '../../assets/images/SupImages/SupImage4.jpg';
 import SupervisorImage5 from '../../assets/images/SupImages/SupImage5.jpg';
-
+import Calander from '../Calander';
 const SupDashboardContent = () => {
     const supervisionData = [
     {
@@ -47,41 +47,39 @@ const SupDashboardContent = () => {
     ];
 
     const todayScheduleData = [
-  {
-    id: 1,
-    icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-    title: "APM11A1 Lecture",
-    time: "10:00 - 12:00"
-  },
-  {
-    id: 2,
-    icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-    title: "Research Review",
-    time: "13:00 - 15:00"
-  },
-  {
-    id: 3,
-    icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-    title: "Project Presentation",
-    time: "15:00 - 17:00"
-  },
-  {
-    id: 4,
-    icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-    title: "Team B Meeting",
-    time: "17:00 - 18:00"
-  },
+  // {
+  //   id: 1,
+  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
+  //   title: "APM11A1 Lecture",
+  //   time: "10:00 - 12:00"
+  // },
+  // {
+  //   id: 2,
+  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
+  //   title: "Research Review",
+  //   time: "13:00 - 15:00"
+  // },
+  // {
+  //   id: 3,
+  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
+  //   title: "Project Presentation",
+  //   time: "15:00 - 17:00"
+  // },
+  // {
+  //   id: 4,
+  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
+  //   title: "Team B Meeting",
+  //   time: "17:00 - 18:00"
+  // },
 
-  {
-    id: 5,
-    icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-    title: "Team A Meeting",
-    time: "18:00 - 19:00"
+  // {
+  //   id: 5,
+  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
+  //   title: "Team A Meeting",
+  //   time: "18:00 - 19:00"
   
-  }
+  // }
 ];
-
-
     return (
         <div className="sup-dashboard-container">
         <div className="sup-dashboard-card">
@@ -120,9 +118,9 @@ const SupDashboardContent = () => {
               <div className="sup-todays-schedule-header">
                 <h2>Today's Schedule</h2>
               </div>
-  
+              <Calander/>
                 <div className="sup-todays-schedule-cards">
-                    {todayScheduleData.map(item => (
+                    {/* {todayScheduleData.map(item => (
                         <div className="sup-todays-schedule-card" key={item.id}>
                             <div className="sup-todays-schedule-card-icon">
                                 <img src={item.icon} alt="icon" />
@@ -132,9 +130,8 @@ const SupDashboardContent = () => {
                             <p>{item.time}</p>
                         </div>
                     </div>
-                    ))}
+                    ))} */}
                 </div>
-            
             </div>
           </div>
         </div>
