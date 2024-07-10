@@ -14,9 +14,9 @@ function App() {
   return (
     <>
       {/* <SupSidebar />
-      <SupervisorNotificationsSidebar /> */}
-      <SupRoutes />
-      {/* <PageRoutes /> */}
+      <SupervisorNotificationsSidebar />
+      <SupRoutes /> */}
+      <PageRoutes />
     </>
   )
 }
