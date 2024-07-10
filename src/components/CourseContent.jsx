@@ -23,38 +23,6 @@ const CourseContent = () => {
     
         fetchModules();
       }, []);
-    
-
-    
-    
-    
-    
-    
-    // const courses = [
-    //     {
-    //         name: 'Software Requirementg',
-    //         image: RegImage1,
-    //         description: 'Complete the requirements document'
-    //     },
-    //     {
-    //         name: 'Business Analysis',
-    //         image: RegImage2,
-    //         description: 'Complete the business analysis document'
-    //     },
-    //     {
-    //         name: 'Software Project',
-    //         image: RegImage3,
-    //         description: 'Complete the software project'
-    //     },
-    //     {
-    //         name: 'Software Project',
-    //         image: RegImage4,
-    //         description: 'Complete the software project'
-    //     }
-    // ];
-
-
-
 
     return (
         <div className="course-container">
@@ -64,45 +32,17 @@ const CourseContent = () => {
                 </div>
 
                 <div className="course-card-body">
-
                 {modules.map(module => (
                     <div  key={module.id} className="course-cards">
                         <Link to='/course' className="course-card">
                             <img src={RegImage1} alt= {module.ModuleTitle} />
                             <h4>{module.ModuleTitle}</h4>
                             <p>{module.ModuleDescription}</p>
+                    
                             <Link to="/tasks" className="course-link">View Tasks</Link>
                         </Link>
+                        
                          
-{/* 
-                        <Link to='/course' className="course-card">
-                            <img src={RegImage2} alt="Course" />
-                            <h4>Business Analysis</h4>
-                            <p>Complete the business analysis document</p>
-                            <Link to="/tasks" className="course-link">View Tasks</Link>
-                        </Link>
-
-                        <Link to='/course' className="course-card">
-                            <img src={RegImage3} alt="Course" />
-                            <h4>Software Project</h4>
-                            <p>Complete the software project</p>
-                            <Link to="/tasks" className="course-link">View Tasks</Link>
-                        </Link>
-
-                        <Link to='/course' className="course-card">
-                            <img src={RegImage4} alt="Course" />
-                            <h4>Software Project</h4>
-                            <p>Complete the software project</p>
-                            <Link to="/tasks" className="course-link">View Tasks</Link>
-                        </Link>
-
-
-                        <Link to='/course' className="course-card">
-                            <img src={RegImage1} alt="Course" />
-                            <h4>Software Project</h4>
-                            <p>Complete the software project</p>
-                            <Link to="/tasks" className="course-link">View Tasks</Link>
-                        </Link> */}
                     </div>
                     ))}
                 </div>
