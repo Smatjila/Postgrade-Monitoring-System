@@ -1,4 +1,5 @@
 import React from 'react';
+
 // import Sidebar from './components/Sidebar';
 // import RightSidebar from './components/RightSidebar';
 // import DashboardContent from './components/DashboardContent';
@@ -17,6 +18,7 @@ function App() {
       <SupervisorNotificationsSidebar /> 
        <SupRoutes />
       <PageRoutes />
+      
     </>
   )
 }

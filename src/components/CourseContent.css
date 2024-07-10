@@ -1,0 +1,44 @@
+/* src/components/Modules.css */
+.course-container {
+    padding: 20px;
+  }
+  
+  .courses-cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .courses-cards {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: calc(20% - 20px);
+  }
+  
+  .module-card img {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .module-card h3 {
+    margin: 10px 0;
+  }
+  
+  .module-card p {
+    color: #666;
+  }
+  
+  .view-tasks-link {
+    color: #f60;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .view-tasks-link:hover {
+    text-decoration: underline;
+  }
+  
