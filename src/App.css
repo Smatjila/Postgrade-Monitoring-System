@@ -80,7 +80,7 @@ body {
   width: 300px; 
   height: 100vh;
   /* background-image: url(../src/assets/images/BackgroundImg.jpg); */
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../src/assets/images/BackgroundImg.jpg);
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../src/assets/images/SupBG.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -294,14 +294,6 @@ body {
   height: 100%;
 }
 
-.course-cards .course-card:nth-child(1) {
-}
-
-.course-cards .course-card:nth-child(2) {
-}
-
-.course-cards .course-card:nth-child(3) {
-}
 
 .todays-schedule-body {
   position: relative;
@@ -456,8 +448,9 @@ body {
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  height: 80vh; /* Set the height of the modal */
-  overflow-y: auto; /* Enable vertical scrolling */
+  height: 80vh; 
+  overflow-y: auto; 
+  scrollbar-width: none;
 }
 
 .notifications-modal-content .close {
@@ -560,15 +553,13 @@ body {
 .interactions-body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px));
-  gap: 20px;
+  gap: 10px;
 }
 
 .interactions-cards {
-  background-color: #fff; 
-  color: #333; 
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) ;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px));
+  gap: 10px;
 }
 
 .interaction-lecturer-card {

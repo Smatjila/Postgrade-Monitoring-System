@@ -1,52 +1,49 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import BannerImage from '../assets/images/BannerImg.jpg';
-import SubmissionModal from './SubmissionModal'; // Import the SubmissionModal component
-import ReviewSubmissionModal from './Review'; // Adjust path if necessary
+import SubmissionModal from './SubmissionModal';
+import ReviewSubmissionModal from './Review';
 
 const CoursePage = () => {
-    // Sample course details
-    const courseDetails = {
-        name: "Software Engineering",
-        instructor: "Dr. John Doe",
-        description: "This course covers the principles of software engineering, including software development life cycle, requirements engineering, software design, and software testing."
-        // Other course details
-    };
-
-    // Sample syllabus data
-    const syllabus = [
-        { topic: "Introduction to Software Engineering", subtopics: ["Software Development Life Cycle", "Agile Methodology", "Waterfall Model"] },
-        { topic: "Software Requirements", subtopics: ["Requirements Elicitation", "Requirements Analysis", "Requirements Specification"] },
-        { topic: "Software Design", subtopics: ["Design Principles", "Design Patterns", "UML Diagrams"] },
-        // Other topics
-    ];
-
-    // Example state for submission available/disabled
+    const { courseId } = useParams(); // Get the courseId from the URL
+    const [courseDetails, setCourseDetails] = useState(null);
     const [submissionAvailable, setSubmissionAvailable] = useState(true);
-
-    // Modal state for submission
     const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
-    // Modal state for review
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [documentUrl, setDocumentUrl] = useState('');
 
-    const openSubmissionModal = () => {
-        setIsSubmissionModalOpen(true);
-    };
+    useEffect(() => {
+        // Fetch course details based on courseId
+        const fetchCourseDetails = async () => {
+            // Replace with actual fetch call
+            const data = {
+                id: courseId,
+                name: 'Sample Course',
+                instructor: 'Dr. John Doe',
+                description: 'This course covers various aspects of software engineering...',
+                syllabus: [
+                    { topic: "Introduction to Software Engineering", subtopics: ["Software Development Life Cycle", "Agile Methodology", "Waterfall Model"] },
+                    { topic: "Software Requirements", subtopics: ["Requirements Elicitation", "Requirements Analysis", "Requirements Specification"] },
+                    { topic: "Software Design", subtopics: ["Design Principles", "Design Patterns", "UML Diagrams"] }
+                ]
+            };
+            setCourseDetails(data);
+        };
+        fetchCourseDetails();
+    }, [courseId]);
 
-    const closeSubmissionModal = () => {
-        setIsSubmissionModalOpen(false);
-    };
-
+    const openSubmissionModal = () => setIsSubmissionModalOpen(true);
+    const closeSubmissionModal = () => setIsSubmissionModalOpen(false);
     const openReviewModal = (url) => {
         setDocumentUrl(url);
         setIsReviewModalOpen(true);
     };
-
     const closeReviewModal = () => {
         setDocumentUrl('');
         setIsReviewModalOpen(false);
     };
+
+    if (!courseDetails) return <div>Loading...</div>;
 
     return (
         <div className="course-page">
@@ -59,27 +56,20 @@ const CoursePage = () => {
                     <h3>Instructor: {courseDetails.instructor}</h3>
                     <p>{courseDetails.description}</p>
                 </div>
-
                 <div className="syllabus">
                     <h3>Semester Assignments</h3>
                     <ul>
-                        {syllabus.map((topic, index) => (
+                        {courseDetails.syllabus.map((topic, index) => (
                             <li key={index}>
                                 <strong>{topic.topic}</strong>
                                 <ul>
                                     {topic.subtopics.map((subtopic, subIndex) => (
-                                        <li key={subIndex}>
-                                            {subtopic}
-                                        </li>
+                                        <li key={subIndex}>{subtopic}</li>
                                     ))}
                                     {submissionAvailable && (
-                                        <button className="submit-btn" onClick={openSubmissionModal}>
-                                            Submit Assignment
-                                        </button>
+                                        <button className="submit-btn" onClick={openSubmissionModal}>Submit Assignment</button>
                                     )}
-                                    <button className="review-btn" onClick={() => openReviewModal('https://example.com/submitted_document.pdf')}>
-                                        Review Submission
-                                    </button>
+                                    <button className="review-btn" onClick={() => openReviewModal('https://example.com/submitted_document.pdf')}>Review Submission</button>
                                     {!submissionAvailable && (
                                         <p>Submission closed</p>
                                     )}
