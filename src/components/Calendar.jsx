@@ -17,6 +17,12 @@ function CurrentWeekRow(props) {
 }
 
 function MyDatePicker() {
+  const DEFAULT_OPTION="Choose category"
+
+  let inputElem,
+  inputElem2,
+  todoList=[],
+  calendar;   
   const [selected, setSelected] = useState(new Date());
   return (
       <DayPicker
@@ -35,6 +41,6 @@ function MyDatePicker() {
   );
 }
 
-
+ 
 
 export default MyDatePicker;
