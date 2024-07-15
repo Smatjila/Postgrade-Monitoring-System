@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../Backend/Config'; // Adjust the import path as necessary
+import { auth, db } from '../../Backend/Config'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,31 +13,27 @@ const ProgressTasks = () => {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const toastId = toast.loading('Loading tasks...'); // Show loading toast immediately
+            const toastId = toast.loading('Loading tasks...'); 
             try {
-                const userDoc = await getDoc(doc(db, 'Student', userId));
-                const courses = userDoc.data().CourseID;
-
+                const StudentDoc = await getDoc(doc(db, 'Student', userId));
+                const kanban = StudentDoc.data().Kanban;
+                console.log(kanban)
                 let allTasks = [];
-                for (const course of courses) {
-                    const courseDoc = await getDoc(doc(db, 'Module', course, 'StudentID', userId));
-                    const assignments = courseDoc.data().Assignments;
-
-                    for (const [assignmentId, assignment] of Object.entries(assignments)) {
-                        allTasks.push({
-                            id: assignmentId,
-                            courseId: course,
-                            name: assignment.AssignmentTitle,
-                            description: assignment.AssignmentDescription,
-                            dueDate: assignment.AssignmentCreation.seconds, // Convert timestamp to date
-                            status: assignment.AssignmentStatus
-                        });
-                    }
+                for (const [kanbanId, task] of Object.entries(kanban)) {
+                    allTasks.push({
+                        id: kanbanId,
+                        courseId: task.ModuleName,
+                        name: task.ModuleName,
+                        description: task.TaskDescription,
+                        dueDate: task.TaskCreation.seconds,
+                        status: task.TaskStatus
+                    });
                 }
 
                 if (courseId) {
                     allTasks = allTasks.filter(task => task.courseId === courseId);
                 }
+
 
                 setTasks(allTasks);
                 toast.update(toastId, { render: 'Tasks loaded successfully', type: 'success', isLoading: false, autoClose: 2000 }); // Dismiss loading toast on success
@@ -51,7 +47,7 @@ const ProgressTasks = () => {
     }, [userId, courseId]);
 
     const handleTaskCompletion = async (taskId) => {
-        const toastId = toast.loading('Updating task status...'); // Show loading toast
+        const toastId = toast.loading('Updating task status...'); 
         try {
             const taskIndex = tasks.findIndex(task => task.id === taskId);
             if (taskIndex === -1) return;
@@ -65,17 +61,14 @@ const ProgressTasks = () => {
                 newStatus = "Pending"; 
             }
 
-            const courseId = tasks[taskIndex].courseId;
-            const taskDocRef = doc(db, 'Module', courseId, 'StudentID', userId);
+            const taskDocRef = doc(db, 'Student', userId);
             const taskDoc = await getDoc(taskDocRef);
 
             if (taskDoc.exists) {
-                const assignments = taskDoc.data().Assignments;
-                assignments[taskId].AssignmentStatus = newStatus;
+                const Kanban = taskDoc.data().Kanban;
+                Kanban[taskId].TaskStatus = newStatus;
 
-                await updateDoc(taskDocRef, { Assignments: assignments });
-
-                // Update local state after Firestore update is successful
+                await updateDoc(taskDocRef, { Kanban: Kanban });
                 setTasks(tasks.map(task => {
                     if (task.id === taskId) {
                         return { ...task, status: newStatus };
