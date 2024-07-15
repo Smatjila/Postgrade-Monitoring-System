@@ -5,7 +5,7 @@ import RegImage2 from '../../assets/images/RegImage2.jpg';
 import RegImage3 from '../../assets/images/RegImage3.jpg';
 import RegImage4 from '../../assets/images/RegImage4.jpg';
 import RegImage5 from '../../assets/images/RegImage5.jpg';
-
+import Calander from '../Calander'
 const DashboardContent = () => {
     return (
         <div className="dashboard-container">
@@ -89,8 +89,8 @@ const DashboardContent = () => {
                                 <i className="fas fa-arrow-right"></i>
                             </div>
                         </div>
-
-                        <div className="todays-schedule-cards">
+                        <Calander/>
+                        {/* <div className="todays-schedule-cards">
                             <div className="todays-schedule-card">
                                 <div className="todays-schedule-card-icon">
                                     <img src="https://via.placeholder.com/50" alt="icon" />
@@ -156,7 +156,7 @@ const DashboardContent = () => {
                                     <p>10:00 - 12:00</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

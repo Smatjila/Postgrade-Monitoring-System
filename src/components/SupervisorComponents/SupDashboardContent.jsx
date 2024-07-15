@@ -118,7 +118,7 @@ const SupDashboardContent = () => {
               <div className="sup-todays-schedule-header">
                 <h2>Today's Schedule</h2>
               </div>
-              <Calander/>
+              {/* <Calander/> */}
                 <div className="sup-todays-schedule-cards">
                     {/* {todayScheduleData.map(item => (
                         <div className="sup-todays-schedule-card" key={item.id}>

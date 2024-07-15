@@ -4,36 +4,61 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap/dist/js/bootstrap.bundle.min'; 
+import Swal from 'sweetalert2';
+import {useAuth} from '../Backend/AuthContext';
 
 function Calendar() {
+  const {CurrentUser}=useAuth();
   const [events, setEvents] = useState([
     { title: 'Software Testing', start: '2024-07-01', end: '2024-07-15' },
     { title: 'Research Paper', start: '2024-07-02', end: '2024-07-05' }
   ]);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
 
   const handleDateClick = (arg) => {
     setNewEvent({ ...newEvent, start: arg.dateStr, end: arg.dateStr });
     setShowModal(true);
   };
+const showEventPopup=async()=>{
+  const {value:formValues}=await Swal.fire({
+    title:'Add Event',
+    html:
+    `
+        <input id="swal-input1" class="swal2-input" placeholder="Event Title">
+        <input id="swal-input2" class="swal2-input" type="date" value="${newEvent.start}">
+        <input id="swal-input3" class="swal2-input" type="date" value="${newEvent.end}">
+      `,
+      focusConfirm:false,
+      preConfirm:()=>{
+        return[
+          document.getElementById('swal-input1').value,
+          document.getElementById('swal-input2').value,
+          document.getElementById('swal-input3').value
+        ];
+      }
+  });
+  if(formValues){
+    const[title,start,end]=formValues;
+    setEvents([...events,{title,start,end}]);
+    Swal.fire('Event Added',JSON.stringify(formValues))
+  }
+};
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewEvent({ ...newEvent, [name]: value });
+  // };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewEvent({ ...newEvent, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setEvents([...events, newEvent]);
-    setShowModal(false);
-  };
-
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setEvents([...events, newEvent]);
+  //   setShowModal(false);
+  // };
+  const userType=CurrentUser?.email.startsWith('7')?'Supervisor':'';
   return (
     <div>
-      <button className="btn btn-primary" onClick={() => setShowModal(true)}>Add Event</button>
-
+       {userType ==='Supervisor' && ( <button className="btn btn-primary" onClick={showEventPopup}>Add Event</button>)} 
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
@@ -48,7 +73,7 @@ function Calendar() {
         dateClick={handleDateClick}
       />
 
-      {showModal && (
+      {/* {showModal && (
         <div className="modal show fade d-block" tabIndex="-1" style={{ display: 'block' }}>
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
@@ -76,7 +101,7 @@ function Calendar() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
