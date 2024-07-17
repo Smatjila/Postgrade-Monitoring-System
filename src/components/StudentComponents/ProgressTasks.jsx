@@ -239,8 +239,8 @@ const ProgressTasks = () => {
                 </div>
             </div>
             {isModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
+                <div className="AddTaskModal">
+                    <div className="AddTaskModal-content">
                         <span className="close" onClick={closeModal}>&times;</span>
                         <h2>Add New Task</h2>
                         <label>Module Name:</label>

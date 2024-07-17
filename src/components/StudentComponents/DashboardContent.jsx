@@ -4,13 +4,13 @@ import RegImage1 from '../../assets/images/RegImage1.jpg';
 import RegImage2 from '../../assets/images/RegImage2.jpg';
 import RegImage3 from '../../assets/images/RegImage3.jpg';
 import RegImage4 from '../../assets/images/RegImage4.jpg';
-//import RegImage5 from '../../assets/images/RegImage5.jpg';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth, db } from '../../Backend/Config';
 import { doc, getDoc } from 'firebase/firestore';
 import { ToastContainer ,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Calendar from '../Shared/Calendar';
 
 const DashboardContent = () => {
 
@@ -168,15 +168,14 @@ const DashboardContent = () => {
                     {/* Todays Schedule */}
                     <div className="todays-schedule-body">
                         <div className="todays-schedule-header">
-                            <h2>Today's Schedule</h2>
-
+                            <h2>Current Schedule</h2>
                             <div className="todays-schedule-header-button">
                                 {/* Arrow for button for redirect */}
                                 <i className="fas fa-arrow-right"></i>
                             </div>
                         </div>
-
-                        <div className="todays-schedule-cards">
+                        <Calendar/>
+                        {/* <div className="todays-schedule-cards">
                             <div className="todays-schedule-card">
                                 <div className="todays-schedule-card-icon">
                                     <img src="https://via.placeholder.com/50" alt="icon" />
@@ -242,7 +241,7 @@ const DashboardContent = () => {
                                     <p>10:00 - 12:00</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

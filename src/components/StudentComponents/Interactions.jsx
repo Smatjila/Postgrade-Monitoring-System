@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import ChatModal from "./InteractionChatModal";
+import socket from '../../Backend/socket'
 
 const Interactions = () => {
     const [showModal, setShowModal] = useState(false);
+    const [room, setRoom] = useState(""); // Set an example room name
+    const [username, setUsername] = useState(""); // Set an example username
 
     const openModal = () => {
       setShowModal(true);
@@ -48,6 +51,10 @@ const Interactions = () => {
                 <ChatModal 
                     isOpen={showModal} 
                     onClose={closeModal} 
+                    socket={socket}
+                    username={username}
+                    room={room}
+                    lecturer="Dr Jane Doe"
                 />
             )}
         </div>
