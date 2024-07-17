@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../Backend/Config'; // Adjust the import path as necessary
+import { getDoc, doc, updateDoc, collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../../Backend/Config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SupTasks = () => {
     const [tasks, setTasks] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newTaskName, setNewTaskName] = useState("");
+    const [newTaskDescription, setNewTaskDescription] = useState("");
     const { id } = useParams();
     const supervisorId = auth.currentUser.email.substring(0, 9);
     const courseId = id ? parseInt(id) : null;
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const toastId = toast.loading('Loading tasks...'); // Show loading toast immediately
+            const toastId = toast.loading('Loading tasks...');
             try {
                 const supervisorDoc = await getDoc(doc(db, 'Supervisor', supervisorId));
                 const kanban = supervisorDoc.data().Kanban;
@@ -25,11 +28,10 @@ const SupTasks = () => {
                         courseId: task.ModuleName,
                         name: task.ModuleName,
                         description: task.TaskDescription,
-                        dueDate: task.TaskCreation.seconds, // Convert timestamp to date
+                        dueDate: task.TaskCreation.seconds,
                         status: task.TaskStatus
                     });
                 }
-
                 if (courseId) {
                     allTasks = allTasks.filter(task => task.courseId === courseId);
                 }
@@ -57,7 +59,7 @@ const SupTasks = () => {
             } else if (tasks[taskIndex].status === "In Progress") {
                 newStatus = "Complete";
             } else {
-                newStatus = "Pending"; 
+                newStatus = "Pending";
             }
 
             const taskDocRef = doc(db, 'Supervisor', supervisorId);
@@ -103,6 +105,61 @@ const SupTasks = () => {
         }
     };
 
+    const addTask = async () => {
+        try {
+            const newTask = {
+                TaskStatus: "Not Started",
+                TaskCreation: {
+                    seconds: new Date().getTime() / 1000, 
+                    nanoseconds: 0
+                },
+                ModuleName: newTaskName,
+                TaskDescription: newTaskDescription
+            };
+
+            const supervisorDocRef = doc(db, 'Supervisor', supervisorId);
+            const supervisorDoc = await getDoc(supervisorDocRef);
+            if (!supervisorDoc.exists()) {
+                console.error('Supervisor document not found');
+                return;
+            }
+
+            const kanban = supervisorDoc.data().Kanban;
+            const newTaskRef = await addDoc(collection(db, 'Supervisor', supervisorId, 'Kanban'), newTask);
+
+            kanban[newTaskRef.id] = newTask;
+
+            await updateDoc(supervisorDocRef, { Kanban: kanban });
+
+            setTasks([...tasks, {
+                id: newTaskRef.id,
+                courseId: newTask.ModuleName,
+                name: newTask.ModuleName,
+                description: newTask.TaskDescription,
+                dueDate: newTask.TaskCreation.seconds,
+                status: newTask.TaskStatus
+            }]);
+
+            toast.success('New task added successfully', { autoClose: 2000 });
+
+            // Close the modal after adding task
+            setIsModalOpen(false);
+            setNewTaskName("");
+            setNewTaskDescription("");
+        } catch (error) {
+            console.error('Error adding task: ', error);
+            toast.error('Failed to add new task', { autoClose: 2000 });
+        }
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const pendingTasks = tasks.filter(task => task.status === "Pending");
     const inProgressTasks = tasks.filter(task => task.status === "In Progress");
     const completeTasks = tasks.filter(task => task.status === "Complete");
@@ -114,6 +171,7 @@ const SupTasks = () => {
             <div className="tasks-card">
                 <div className="tasks-card-header">
                     <h2>Supervisor Tasks</h2>
+                    <button className="add-task-button" onClick={openModal}>Add Task</button>
                 </div>
                 <div className="tasks-card-body">
                     <div className="tasks-cards">
@@ -180,6 +238,21 @@ const SupTasks = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal for adding new task */}
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <h2>Add New Task</h2>
+                        <label>Module Name:</label>
+                        <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} />
+                        <label>Description:</label>
+                        <textarea value={newTaskDescription} onChange={(e) => setNewTaskDescription(e.target.value)}></textarea>
+                        <button onClick={addTask}>Add Task</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

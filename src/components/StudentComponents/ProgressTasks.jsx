@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../Backend/Config'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const ProgressTasks = () => {
     const [tasks, setTasks] = useState([]);
     const { id } = useParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newTaskName, setNewTaskName] = useState("");
+    const [newTaskDescription, setNewTaskDescription] = useState("");
     const userId = auth.currentUser.email.substring(0, 9);
     const courseId = id ? parseInt(id) : null;
 
@@ -102,6 +105,61 @@ const ProgressTasks = () => {
         }
     };
 
+    const AddTask = async () =>{
+        try {
+            const newTask = {
+                TaskStatus: "Not Started",
+                TaskCreation: {
+                    seconds: new Date().getTime() / 1000, 
+                    nanoseconds: 0
+                },
+                ModuleName: newTaskName,
+                TaskDescription: newTaskDescription
+            };
+
+            const supervisorDocRef = doc(db, 'Student', userId);
+            const supervisorDoc = await getDoc(supervisorDocRef);
+            if (!supervisorDoc.exists()) {
+                console.error('Student document not found');
+                return;
+            }
+
+            const kanban = supervisorDoc.data().Kanban;
+            const newTaskRef = await addDoc(collection(db, 'Student', userId, 'Kanban'), newTask);
+
+            kanban[newTaskRef.id] = newTask;
+
+            await updateDoc(supervisorDocRef, { Kanban: kanban });
+
+            setTasks([...tasks, {
+                id: newTaskRef.id,
+                courseId: newTask.ModuleName,
+                name: newTask.ModuleName,
+                description: newTask.TaskDescription,
+                dueDate: newTask.TaskCreation.seconds,
+                status: newTask.TaskStatus
+            }]);
+
+            toast.success('New task added successfully', { autoClose: 2000 });
+
+            // Close the modal after adding task
+            setIsModalOpen(false);
+            setNewTaskName("");
+            setNewTaskDescription("");
+        } catch (error) {
+            console.error('Error adding task: ', error);
+            toast.error('Failed to add new task', { autoClose: 2000 });
+        }
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const pendingTasks = tasks.filter(task => task.status === "Pending");
     const inProgressTasks = tasks.filter(task => task.status === "In Progress");
     const completeTasks = tasks.filter(task => task.status === "Complete");
@@ -113,6 +171,7 @@ const ProgressTasks = () => {
             <div className="tasks-card">
                 <div className="tasks-card-header">
                     <h2>Your Tasks</h2>
+                    <button onClick={openModal}>Add Task</button>
                 </div>
                 <div className="tasks-card-body">
                     <div className="tasks-cards">
@@ -179,6 +238,20 @@ const ProgressTasks = () => {
                     </div>
                 </div>
             </div>
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <h2>Add New Task</h2>
+                        <label>Module Name:</label>
+                        <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} />
+                        <label>Description:</label>
+                        <textarea value={newTaskDescription} onChange={(e) => setNewTaskDescription(e.target.value)}></textarea>
+                        <button onClick={AddTask}>Add Task</button>
+                    </div>
+                </div>
+            )}
+        
         </div>
     );
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import SupervisorLayout from '../../components/SupervisorComponents/SupLayout';
 import SupDashboard from './SupDashboard';
