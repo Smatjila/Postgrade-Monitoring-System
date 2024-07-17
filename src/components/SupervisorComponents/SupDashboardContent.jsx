@@ -46,40 +46,7 @@ const SupDashboardContent = () => {
     }
     ];
 
-    const todayScheduleData = [
-  // {
-  //   id: 1,
-  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-  //   title: "APM11A1 Lecture",
-  //   time: "10:00 - 12:00"
-  // },
-  // {
-  //   id: 2,
-  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-  //   title: "Research Review",
-  //   time: "13:00 - 15:00"
-  // },
-  // {
-  //   id: 3,
-  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-  //   title: "Project Presentation",
-  //   time: "15:00 - 17:00"
-  // },
-  // {
-  //   id: 4,
-  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-  //   title: "Team B Meeting",
-  //   time: "17:00 - 18:00"
-  // },
 
-  // {
-  //   id: 5,
-  //   icon: "https://via.placeholder.com/50", // Placeholder URL for icon
-  //   title: "Team A Meeting",
-  //   time: "18:00 - 19:00"
-  //VABDB
-  // }
-];
     return (
         <div className="sup-dashboard-container">
         <div className="sup-dashboard-card">
@@ -119,19 +86,6 @@ const SupDashboardContent = () => {
                 <h2>Today's Schedule</h2>
               </div>
               <Calander/>
-                <div className="sup-todays-schedule-cards">
-                    {/* {todayScheduleData.map(item => (
-                        <div className="sup-todays-schedule-card" key={item.id}>
-                            <div className="sup-todays-schedule-card-icon">
-                                <img src={item.icon} alt="icon" />
-                            </div>
-                            <div className="sup-todays-schedule-card-details">
-                            <h4>{item.title}</h4>
-                            <p>{item.time}</p>
-                        </div>
-                    </div>
-                    ))} */}
-                </div>
             </div>
           </div>
         </div>

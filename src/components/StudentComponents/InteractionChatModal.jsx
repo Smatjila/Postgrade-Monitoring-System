@@ -1,12 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Modal from 'react-modal';
 import LecturerDetails from './LecturerDetails'; // Assuming the file path is correct
+import socket from '../../Backend/socket';
+import { io } from 'socket.io-client'
 
-const ChatModal = ({ isOpen, onClose }) => {
+const ChatModal = ({ isOpen, onClose, username, room, lecturer }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [hasJoinedRoom, setHasJoinedRoom] = useState(false); // Track if the user has joined the room
+
+  useEffect(() => {
+    if (isOpen && !hasJoinedRoom) { // Join the room only if it is open and not yet joined
+      console.log(`Joining room: ${room}`);
+      socket.emit('join_room', room);
+      setHasJoinedRoom(true); // Set the state to true after joining the room
+
+      const handleMessageReceive = (data) => {
+        console.log('Message received:', data);
+        setMessages((prevMessages) => [...prevMessages, data]);
+      };
+
+      socket.on('receive_message', handleMessageReceive);
+
+      return () => {
+        socket.off('receive_message', handleMessageReceive);
+        setHasJoinedRoom(false); // Reset the state when the modal is closed or the component is unmounted
+      };
+    }
+  }, [isOpen, room, hasJoinedRoom]);
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
+  };
+
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        room: room,
+        author: lecturer,
+        message: currentMessage,
+        time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+      };
+      console.log('Sending message:', messageData);
+      await socket.emit("send_message", messageData);
+      setMessages((prevMessages) => [...prevMessages, messageData]);
+      setCurrentMessage("");
+    }
   };
 
   return (
@@ -29,36 +69,26 @@ const ChatModal = ({ isOpen, onClose }) => {
 
         <div className="chat-modal-body">
           <div className="chat-messages">
-            <div className="chat-message lecturer">
-              <div className="message-content">
-                <p>Dr. Jane Doe: Hello! How can I help you today?</p>
+            {messages.map((msg, index) => (
+              <div key={index} className={`chat-message ${msg.author === lecturer ? "user" : "lecturer"}`}>
+                <div className="message-content">
+                  <p><strong><img src="https://via.placeholder.com/150" alt="lecturer" /></strong> {msg.message}</p>
+                  <span>{msg.author}:{msg.time}</span>
+                </div>
               </div>
-            </div>
-
-            <div className="chat-message student">
-              <div className="message-content">
-                <p>You: I have a question about the assignment.</p>
-              </div>
-            </div>
-
-            <div className="chat-message lecturer">
-              <div className="message-content">
-                <p>Dr. Jane Doe: Sure! What do you need help with?</p>
-              </div>
-            </div>
-
-            <div className="chat-message student">
-              <div className="message-content">
-                <p>You: I'm not sure how to get started.</p>
-              </div>
-            </div>
-            
+            ))}
           </div>
         </div>
 
         <div className="chat-input">
-          <input type='text' placeholder='Type your message here...' />
-          <button className='chat-send'>Send</button>
+          <input
+            placeholder="Message..."
+            value={currentMessage}
+            onChange={(event) => {
+              setCurrentMessage(event.target.value);
+            }}
+          />
+          <button onClick={sendMessage}>Send Message</button>
         </div>
       </div>
     </Modal>
