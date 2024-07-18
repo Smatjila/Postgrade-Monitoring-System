@@ -1027,9 +1027,9 @@ body {
   text-align: center;
 }
 
-.course-page {
+/*.course-page {
 
-}
+}*/
 
 .course-page-card {
   position: absolute;
@@ -1373,7 +1373,7 @@ li {
 
 
 /* Modal styles */
-.modal {
+.AddTaskModal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1397,14 +1397,14 @@ li {
   z-index: 1000;
 }
 
-.modal-content {
+.AddTaskModal-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.modal-content h2 {
+.AddTaskModal-content h2 {
   margin-bottom: 25px;
 }
 
@@ -1421,8 +1421,3 @@ li {
 .close-modal-btn:hover {
   background-color: #0056b3;
 }
-
-
-
-
-

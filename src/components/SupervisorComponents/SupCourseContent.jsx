@@ -1,7 +1,6 @@
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import SupervisorImage1 from '../../assets/images/SupImages/SupImage1.jpg';
 //import SupervisorImage2 from '../../assets/images/SupImages/SupImage2.jpg';

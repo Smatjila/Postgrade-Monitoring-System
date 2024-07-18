@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import Modal from 'react-modal';
-import { motion, AnimatePresence } from 'framer-motion';
-import StudentDetails from './StudentDetails'; // Assuming the file path is correct
-import socket from '../../back-end/socket'; // Import the shared socket
+import LecturerDetails from './LecturerDetails'; // Assuming the file path is correct
+import socket from '../../Backend/socket';
+import { io } from 'socket.io-client'
 
-const SupChatModal = ({ isOpen, onClose, room, lecturer, student }) => {
+const ChatModal = ({ isOpen, onClose, username, room, lecturer }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [hasJoinedRoom, setHasJoinedRoom] = useState(false);
+  const [hasJoinedRoom, setHasJoinedRoom] = useState(false); // Track if the user has joined the room
 
   useEffect(() => {
-    if (isOpen && !hasJoinedRoom) {
+    if (isOpen && !hasJoinedRoom) { // Join the room only if it is open and not yet joined
       console.log(`Joining room: ${room}`);
       socket.emit('join_room', room);
-      setHasJoinedRoom(true);
+      setHasJoinedRoom(true); // Set the state to true after joining the room
 
       const handleMessageReceive = (data) => {
         console.log('Message received:', data);
@@ -48,17 +48,15 @@ const SupChatModal = ({ isOpen, onClose, room, lecturer, student }) => {
       setCurrentMessage("");
     }
   };
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <Modal
-          isOpen={isOpen}
-          onRequestClose={onClose}
-          className="chat-modal"
-          overlayClassName="chat-modal-overlay"
-          ariaHideApp={false} // Disable appElement warning
-        >
-       <div className="chat-modal-content">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className="chat-modal"
+      overlayClassName="chat-modal-overlay"
+    >
+      <div className="chat-modal-content">
         <span className="close" onClick={onClose}>&times;</span>
         <div className="chat-modal-header" onMouseEnter={toggleDetails} onMouseLeave={toggleDetails}>
           <img src="https://via.placeholder.com/150" alt="lecturer" />
@@ -93,10 +91,8 @@ const SupChatModal = ({ isOpen, onClose, room, lecturer, student }) => {
           <button onClick={sendMessage}>Send Message</button>
         </div>
       </div>
-        </Modal>
-      )}
-    </AnimatePresence>
+    </Modal>
   );
 };
 
-export default SupChatModal;
+export default ChatModal;

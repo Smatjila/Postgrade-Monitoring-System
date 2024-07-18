@@ -443,7 +443,60 @@
   border-radius: 10px;
 }
 
+.kanban-section {
+  margin-top: 20px;
+}
 
+.kanban-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.kanban-columns {
+  display: flex;
+  gap: 20px;
+}
+
+.kanban-column {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.kanban-column h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.kanban-card {
+  background-color: #fff;
+  color: #333;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-card h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.kanban-card p {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.kanban-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Optional: Add hover effect */
+.kanban-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 /* Supervisor Courses */
 .sup-courses-card {
   position: absolute;
@@ -1274,7 +1327,6 @@ button:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
-
 
 .modal-content {
     display: flex;

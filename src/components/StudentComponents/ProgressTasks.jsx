@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { getDoc, doc, updateDoc, collection, addDoc } from 'firebase/firestore';
-import { auth, db } from '../../Backend/Config';
+import { getDoc, doc, updateDoc, addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../Backend/Config'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SupTasks = () => {
+const ProgressTasks = () => {
     const [tasks, setTasks] = useState([]);
+    const { id } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTaskName, setNewTaskName] = useState("");
     const [newTaskDescription, setNewTaskDescription] = useState("");
-    const { id } = useParams();
-    const supervisorId = auth.currentUser.email.substring(0, 9);
+    const userId = auth.currentUser.email.substring(0, 9);
     const courseId = id ? parseInt(id) : null;
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const toastId = toast.loading('Loading tasks...');
+            const toastId = toast.loading('Loading tasks...'); 
             try {
-                const supervisorDoc = await getDoc(doc(db, 'Supervisor', supervisorId));
-                const kanban = supervisorDoc.data().Kanban;
-
+                const StudentDoc = await getDoc(doc(db, 'Student', userId));
+                const kanban = StudentDoc.data().Kanban;
+                console.log(kanban)
                 let allTasks = [];
                 for (const [kanbanId, task] of Object.entries(kanban)) {
                     allTasks.push({
@@ -32,9 +32,11 @@ const SupTasks = () => {
                         status: task.TaskStatus
                     });
                 }
+
                 if (courseId) {
                     allTasks = allTasks.filter(task => task.courseId === courseId);
                 }
+
 
                 setTasks(allTasks);
                 toast.update(toastId, { render: 'Tasks loaded successfully', type: 'success', isLoading: false, autoClose: 2000 }); // Dismiss loading toast on success
@@ -45,10 +47,10 @@ const SupTasks = () => {
         };
 
         fetchTasks();
-    }, [supervisorId, courseId]);
+    }, [userId, courseId]);
 
     const handleTaskCompletion = async (taskId) => {
-        const toastId = toast.loading('Updating task status...'); // Show loading toast
+        const toastId = toast.loading('Updating task status...'); 
         try {
             const taskIndex = tasks.findIndex(task => task.id === taskId);
             if (taskIndex === -1) return;
@@ -59,19 +61,17 @@ const SupTasks = () => {
             } else if (tasks[taskIndex].status === "In Progress") {
                 newStatus = "Complete";
             } else {
-                newStatus = "Pending";
+                newStatus = "Pending"; 
             }
 
-            const taskDocRef = doc(db, 'Supervisor', supervisorId);
+            const taskDocRef = doc(db, 'Student', userId);
             const taskDoc = await getDoc(taskDocRef);
 
             if (taskDoc.exists) {
-                const kanban = taskDoc.data().Kanban;
-                kanban[taskId].TaskStatus = newStatus;
+                const Kanban = taskDoc.data().Kanban;
+                Kanban[taskId].TaskStatus = newStatus;
 
-                await updateDoc(taskDocRef, { Kanban: kanban });
-
-                // Update local state after Firestore update is successful
+                await updateDoc(taskDocRef, { Kanban: Kanban });
                 setTasks(tasks.map(task => {
                     if (task.id === taskId) {
                         return { ...task, status: newStatus };
@@ -105,7 +105,7 @@ const SupTasks = () => {
         }
     };
 
-    const addTask = async () => {
+    const AddTask = async () =>{
         try {
             const newTask = {
                 TaskStatus: "Not Started",
@@ -117,15 +117,15 @@ const SupTasks = () => {
                 TaskDescription: newTaskDescription
             };
 
-            const supervisorDocRef = doc(db, 'Supervisor', supervisorId);
+            const supervisorDocRef = doc(db, 'Student', userId);
             const supervisorDoc = await getDoc(supervisorDocRef);
             if (!supervisorDoc.exists()) {
-                console.error('Supervisor document not found');
+                console.error('Student document not found');
                 return;
             }
 
             const kanban = supervisorDoc.data().Kanban;
-            const newTaskRef = await addDoc(collection(db, 'Supervisor', supervisorId, 'Kanban'), newTask);
+            const newTaskRef = await addDoc(collection(db, 'Student', userId, 'Kanban'), newTask);
 
             kanban[newTaskRef.id] = newTask;
 
@@ -150,7 +150,7 @@ const SupTasks = () => {
             console.error('Error adding task: ', error);
             toast.error('Failed to add new task', { autoClose: 2000 });
         }
-    };
+    }
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -170,8 +170,8 @@ const SupTasks = () => {
             <ToastContainer />
             <div className="tasks-card">
                 <div className="tasks-card-header">
-                    <h2>Supervisor Tasks</h2>
-                    <button className="add-task-button" onClick={openModal}>Add Task</button>
+                    <h2>Your Tasks</h2>
+                    <button onClick={openModal}>Add Task</button>
                 </div>
                 <div className="tasks-card-body">
                     <div className="tasks-cards">
@@ -238,8 +238,6 @@ const SupTasks = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Modal for adding new task */}
             {isModalOpen && (
                 <div className="AddTaskModal">
                     <div className="AddTaskModal-content">
@@ -249,12 +247,13 @@ const SupTasks = () => {
                         <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} />
                         <label>Description:</label>
                         <textarea value={newTaskDescription} onChange={(e) => setNewTaskDescription(e.target.value)}></textarea>
-                        <button onClick={addTask}>Add Task</button>
+                        <button onClick={AddTask}>Add Task</button>
                     </div>
                 </div>
             )}
+        
         </div>
     );
 }
 
-export default SupTasks;
+export default ProgressTasks;
