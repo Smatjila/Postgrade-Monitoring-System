@@ -17,7 +17,7 @@ const NotificationsPopupModal = ({ isOpen, notifications, onClose }) => {
         className="notifications-modal-content"
       >
         <span className="close" onClick={onClose}>&times;</span>
-        <h2>All Notifications</h2>
+        <h2>Announcements</h2>
         <div className="notifications-list">
           {notifications.map(notification => (
             <div key={notification.id} className="notification-item">

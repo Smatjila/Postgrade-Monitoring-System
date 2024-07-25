@@ -18,8 +18,7 @@ const DashboardContent = () => {
     const { id } = useParams();
     const StudentID = auth.currentUser.email.substring(0, 9);
     const courseId = id ? parseInt(id) : null;
-
-
+     
     useEffect(() => {
         const fetchTasks = async () => {
             const toastId = toast.loading('Loading Data...');
@@ -175,73 +174,6 @@ const DashboardContent = () => {
                             </div>
                         </div>
                         <Calendar/>
-                        {/* <div className="todays-schedule-cards">
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Software Project</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Software Project</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Software Project</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Business Analysis</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Software Requirements</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-
-                            <div className="todays-schedule-card">
-                                <div className="todays-schedule-card-icon">
-                                    <img src="https://via.placeholder.com/50" alt="icon" />
-                                </div>
-
-                                <div className="todays-schedule-card-details">
-                                    <h4>Software Requirements</h4>
-                                    <p>10:00 - 12:00</p>
-                                </div>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>
