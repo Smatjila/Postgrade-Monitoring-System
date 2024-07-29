@@ -10,9 +10,10 @@ import { db, auth } from '../../Backend/Config';
 
 const SupervisorNotificationsSidebar = () => {
 const {CurentUser}=useAuth();
-const [supervisorID,setSupervisorID]=useState(null);
+const [SupervisorID,setSupervisorID]=useState(null);
 const [showModal, setShowModal] = useState(false);
 const [inputValue,setInputValue]=useState('')
+const [moduleTitles,setModuleTitles]=useState([])
 const[selectedOption,setSelectedOption]=useState('');
   const notifications = [
     { id: 1, supervisor: "Dr. Amanda Green", message: "Reminder: Please review and approve the software design proposal by the end of this week.", date: "2021-09-15", time: "10:00"},
@@ -39,7 +40,6 @@ const[selectedOption,setSelectedOption]=useState('');
       if (!SupervisorID) return;
 
       try {
-
         const q = query(collection(db, 'Module'), where('SupervisorID', '==', Math.floor(SupervisorID)));
         const querySnapshot = await getDocs(q);
         const modulesArray = [];
@@ -75,7 +75,9 @@ const[selectedOption,setSelectedOption]=useState('');
     const handlechoosen=(event)=>{
       setSelectedOption(event.target.value);
     }
-  
+    const moduleOptions=moduleTitles.map((title)=>(<option key={title} value={title}>  
+    {title  }
+    </option>));
   return (
     <div className="supervisor-notifications-sidebar">
       <div className="right-sidebar-header">
@@ -94,9 +96,10 @@ const[selectedOption,setSelectedOption]=useState('');
         <label>Choose Module</label>
         <select id="dropdown" value={selectedOption} onChange={handlechoosen}>
           <option value="">please choose a option</option>
+          {moduleOptions}
         </select>
          <div className="input-card">
-          <input
+          <textarea
           type="text"
           value={inputValue}
           onChange={handleInputChange}
