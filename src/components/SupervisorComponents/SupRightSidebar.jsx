@@ -36,7 +36,8 @@ const[selectedOption,setSelectedOption]=useState('');
   }, []);
   
   useEffect(() => {
-    const fetchModules = async () => {
+    const fetchModules = async () => {   
+      
       if (!SupervisorID) return;
 
       try {

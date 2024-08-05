@@ -50,13 +50,13 @@ const SupInteractions = () => {
                 if (role === 'Supervisor') {
                     q = collection(db, 'Student');
                     if (filterCourseID) {
-                        q = query(q, where('SupervisorID', 'array-contains', Math.floor(SupervisorID)), where('CourseID', '==', Math.floor(filterCourseID)));
+                        q = query(q, where('SupervisorID', 'array-contains', SupervisorID), where('CourseID', '==', filterCourseID));
                     } else {
-                        q = query(q, where('SupervisorID', 'array-contains', Math.floor(SupervisorID)));
+                        q = query(q, where('SupervisorID', 'array-contains', SupervisorID));
                     }
                 } else if (role === 'Student') {
                     q = collection(db, 'Supervisor');
-                    q = query(q, where('StudentID', '==', Math.floor(SupervisorID)));
+                    q = query(q, where('StudentID', '==', SupervisorID));
                 }
 
                 const querySnapshot = await getDocs(q);
@@ -178,4 +178,3 @@ const SupInteractions = () => {
 };
 
 export default SupInteractions;
-

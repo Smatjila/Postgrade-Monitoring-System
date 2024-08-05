@@ -47,7 +47,7 @@ const Interactions = () => {
                     </div>
                 </div>
             </div>
-            {showModal && (
+            {showModal && (      
                 <ChatModal 
                     isOpen={showModal} 
                     onClose={closeModal} 

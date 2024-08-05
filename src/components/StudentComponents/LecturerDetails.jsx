@@ -3,8 +3,9 @@ import React from 'react';
 
 const LecturerDetails = ({ lecturer }) => {
   // Replace with actual lecturer details logic based on lecturer prop
+
   const lecturerDetails = {
-    Image: 'https://via.placeholder.com/150',
+    Image: 'https://via.plaholder.com/150',
     name: lecturer,
     department: 'Software Engineering',
     officeHours: '10:00 - 12:00',
@@ -14,7 +15,7 @@ const LecturerDetails = ({ lecturer }) => {
 
   return (
     <div className="lecturer-details">
-        <img src={lecturerDetails.Image} alt="" />
+      <img src={lecturerDetails.Image} alt="" />
       <h3>{lecturerDetails.name}</h3>
       <p>{lecturerDetails.department}</p>
       <p>Office Hours: {lecturerDetails.officeHours}</p>
