@@ -7,6 +7,7 @@ import Courses from './Courses';
 import CoursePage from './CoursePage';
 import Submission from '../../components/StudentComponents/Submission';
 import ProgressTasks from '../../components/StudentComponents/ProgressTasks'; // Import ProgressTasks
+import SupInteractions from '../../components/SupervisorComponents/SupInteractions';
 
 const PageRoutes = () => {
     return (

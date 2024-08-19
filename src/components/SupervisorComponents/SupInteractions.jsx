@@ -21,9 +21,9 @@ const SupInteractions = () => {
             if (user) {
                 const userId = user.email.substring(0, 9);
                 setSupervisorID(userId);
-                
-                // Fetch user role
-                const userDoc = await getDocs(query(collection(db, 'Supervisor'), where('SupervisorID', '==', userId)));
+
+                const userDoc = await getDocs(query(collection(db, 'Supervisor'), where('SupervisorID', '==', Math.floor(userId))));
+
                 if (!userDoc.empty) {
                     setRole('Supervisor');
                 } else {
@@ -63,16 +63,19 @@ const SupInteractions = () => {
                 const studentdetsArray = [];
                 const supervisorsArray = [];
                 const courseIdArray = [];
+
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     if (role === 'Supervisor') {
-                        courseIdArray.push(data.CourseID);
                         studentdetsArray.push({
                             ProfilePicture: data.ProfilePicture,
                             StudentID: data.StudentID,
                             StudentName: data.StudentName,
                             StudentSurname: data.StudentSurname,
                             lastInteraction: "Just now" // Replace with actual data if available
+                        });
+                        courseIdArray.push({
+                            CourseID: data.CourseID
                         });
                     } else if (role === 'Student') {
                         supervisorsArray.push({
@@ -83,6 +86,7 @@ const SupInteractions = () => {
                         });
                     }
                 });
+
                 setStudentDetails(studentdetsArray);
                 setSupervisorDetails(supervisorsArray);
                 setCourseOptions(courseIdArray);
@@ -106,7 +110,7 @@ const SupInteractions = () => {
 
     const handleFilterByCourseID = (CourseID) => {
         setFilterCourseID(CourseID);
-    }
+    };
 
     return (
         <div className="interactions-container">
@@ -121,7 +125,7 @@ const SupInteractions = () => {
                             <select onChange={(e) => handleFilterByCourseID(e.target.value)}>
                                 <option value="">All courses</option>
                                 {courseOptions.map((course, index) => (
-                                    <option key={index} value={course}>{course}</option>
+                                    <option key={index} value={course.CourseID}>{course.CourseID}</option>
                                 ))}
                             </select>
                         </div>
@@ -138,10 +142,7 @@ const SupInteractions = () => {
                                         <img src={student.ProfilePicture} alt={student.StudentName} />
                                         <h4>{student.StudentName} {student.StudentSurname}</h4>
                                         <p>Stu No.{student.StudentID}</p>
-                                        <p>Course Id:
-                                            {student.CourseID && student.CourseID.map((id, idx) => (
-                                                <span key={idx}>{id}{idx < student.CourseID.length - 1 ? ',' : ''}</span>
-                                            ))}</p>
+                                        <p>Course Id: {student.CourseID}</p>
                                         <p>Interacted: {student.lastInteraction}</p>
                                     </div>
                                 ))
@@ -178,4 +179,3 @@ const SupInteractions = () => {
 };
 
 export default SupInteractions;
-
